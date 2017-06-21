@@ -1,0 +1,23 @@
+{
+  "name": "lgx-decorator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logrox/lgx-decorator.git"
+  },
+  "keywords": [
+    "decorator",
+    "lgx-decorator"
+  ],
+  "author": "Paweł Franczyk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logrox/lgx-decorator/issues"
+  },
+  "homepage": "https://github.com/logrox/lgx-decorator#readme"
+}

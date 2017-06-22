@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+    <style>
+        .text__color--red {
+            color: #F00;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="lgx-decorator.js"></script>
+    <script type="application/x-javascript">
+
+        let stringDecorator = new Decorator(String);
+        stringDecorator.decoration({
+            decorMethod: 'small',
+            name: "addClass",
+            fnDecor: function (className) {
+
+                let container = $('<div>');
+                let html = $(this + '');
+
+                html.addClass(className);
+                html.bind('click', function (e) {
+                    console.log('is Clicked', this, e);
+                });
+                container.append(html);
+
+                return container;
+            }
+        });
+        stringDecorator.decoration({
+            decorMethod: 'small',
+            name: "color",
+            fnDecor: function (arg) {
+                return this + " Działa-color";
+            }
+        });
+
+        stringDecorator.decoration({
+            decorMethod: 'big',
+            name: "addClass",
+            fnDecor: function (arg) {
+                return this + ' Działa-addClass dla big'
+            }
+        });
+
+
+    </script>
+    <base href="/">
+</head>
+<body>
+
+<script>
+    var test = 'test'.small()
+        .decorate('addClass', ['text__color--red']);
+
+    $('body').append(test);
+
+    console.info('log: ', 'test2'.small().decorate({
+        "addClass": ['text__visible--true'],
+        "color": ["#FF0000"]
+    }));
+</script>
+</body>
+</html>

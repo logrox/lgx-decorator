@@ -32,11 +32,12 @@
                 return container;
             }
         });
+
         stringDecorator.decoration({
             decorMethod: 'small',
             name: "color",
             fnDecor: function (arg) {
-                return this + " Działa-color";
+                return this + " color for small";
             }
         });
 
@@ -44,7 +45,7 @@
             decorMethod: 'big',
             name: "addClass",
             fnDecor: function (arg) {
-                return this + ' Działa-addClass dla big'
+                return this + ' addClass for big'
             }
         });
 
@@ -55,15 +56,40 @@
 <body>
 
 <script>
-    var test = 'test'.small()
+    let test = 'test'.small()
         .decorate('addClass', ['text__color--red']);
 
     $('body').append(test);
 
     console.info('log: ', 'test2'.small().decorate({
         "addClass": ['text__visible--true'],
-        "color": ["#FF0000"]
+        "color": ["#F0FD0D"]
     }));
+
+    function Cls() {
+    }
+
+    Cls.prototype.method = function () {
+        return [1985];
+    };
+
+    let cls = new Cls();
+
+    let clsDecorator = new Decorator(cls);
+
+    clsDecorator.decoration({
+        decorMethod: 'method',
+        name: "push",
+        fnDecor: function () {
+
+            return `(${[...this,...arguments].join("-")})`;
+        }
+    },true);
+
+    var result = cls.method().decorate('push',['foo','bar']);
+
+    console.log(result);
+
 </script>
 </body>
 </html>

@@ -41,10 +41,14 @@ window.Decorator = (() => {
                 throw Error('Class required!');
             } else {
                 this._baseClass = baseClass;
-                this._baseClass.prototype.decorate = function () {
-
-                    return decorate.apply(this, [$this, ...arguments]);
-
+                if(this._baseClass.prototype){
+                    this._baseClass.prototype.decorate = function () {
+                        return decorate.apply(this, [$this, ...arguments]);
+                    }
+                }else {
+                    this._baseClass.__proto__.decorate = function () {
+                        return decorate.apply(this, [$this, ...arguments]);
+                    }
                 }
             }
         }
@@ -66,35 +70,39 @@ window.Decorator = (() => {
 
         decoration({decorMethod, fnDecor, name}) {
             let $this = this;
-            if ($this._baseClass.prototype[decorMethod]) {
+            if ($this._baseClass.prototype && $this._baseClass.prototype[decorMethod]) {
                 if (Object.keys($this._methodDecorate).includes(decorMethod)) {
                     $this._addNewFnDocorate({decorMethod, fnDecor, name});
                 } else {
-
                     $this._methodDecorate[decorMethod] = $this._baseClass.prototype[decorMethod];
                     $this._baseClass.prototype[decorMethod] = function () {
                         useMethod = decorMethod;
                         return $this._methodDecorate[decorMethod].apply(this, arguments);
-
                     };
-
                     $this._createFnDecorator({decorMethod, fnDecor, name})
-
                 }
 
+            } else if ($this._baseClass.__proto__ && $this._baseClass.__proto__[decorMethod]) {
+                if (Object.keys($this._methodDecorate).includes(decorMethod)) {
+                    $this._addNewFnDocorate({decorMethod, fnDecor, name});
+                } else {
+                    $this._methodDecorate[decorMethod] = $this._baseClass.__proto__[decorMethod];
+                    $this._baseClass.__proto__[decorMethod] = function () {
+                        useMethod = decorMethod;
+                        return $this._methodDecorate[decorMethod].apply(this, arguments);
+                    };
+                    $this._createFnDecorator({decorMethod, fnDecor, name})
+                }
             } else if ($this._baseClass[decorMethod]) {
                 if (Object.keys($this._methodDecorate).includes(decorMethod)) {
                     $this._addNewFnDocorate({decorMethod, fnDecor, name});
                 } else {
-
                     $this._methodDecorate[decorMethod] = $this._baseClass[decorMethod];
                     $this._baseClass[decorMethod] = function () {
                         useMethod = decorMethod;
                         return $this._methodDecorate[decorMethod].apply(this, arguments);
-
                     };
                     $this._createFnDecorator({decorMethod, fnDecor, name})
-
                 }
 
             } else {

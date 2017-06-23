@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <title>Example</title>
     <style>
-        .text__color--red {
+        .text__small {
+            font-size: 30pt;
+        }
+
+        .text__small--color-red {
             color: #F00;
+            cursor: pointer;
+        }
+
+        .text__small--hover-color-blue:hover {
+            color: #00F;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
-    <script src="lgx-decorator.js"></script>
+    <script src="index.js"></script>
     <script type="application/x-javascript">
 
         let stringDecorator = new Decorator(String);
@@ -19,11 +28,11 @@
             decorMethod: 'small',
             name: "addClass",
             fnDecor: function (className) {
-
                 let container = $('<div>');
                 let html = $(this + '');
 
-                html.addClass(className);
+
+                html.addClass([...arguments].join(' '));
                 html.bind('click', function (e) {
                     console.log('is Clicked', this, e);
                 });
@@ -35,9 +44,9 @@
 
         stringDecorator.decoration({
             decorMethod: 'small',
-            name: "color",
+            name: "p",
             fnDecor: function (arg) {
-                return this + " color for small";
+                return `<p class="test">${this}</p>`;
             }
         });
 
@@ -57,14 +66,21 @@
 
 <script>
     let test = 'test'.small()
-        .decorate('addClass', ['text__color--red']);
+        .decorate('addClass', [
+            'text__small',
+            'text__small--color-red',
+            'text__small--hover-color-blue'
+        ]);
 
     $('body').append(test);
 
-    console.info('log: ', 'test2'.small().decorate({
-        "addClass": ['text__visible--true'],
-        "color": ["#F0FD0D"]
-    }));
+    let test2 = 'test2'.small().decorate({
+        "p": ["#F0FD0D"],
+        "addClass": ['text__small', 'text__small--hover-color-blue'],
+    });
+
+    $('body').append(test2);
+
 
     function Cls() {
     }
@@ -81,12 +97,11 @@
         decorMethod: 'method',
         name: "push",
         fnDecor: function () {
-
-            return `(${[...this,...arguments].join("-")})`;
+            return `(${[...this, ...arguments].join("-")})`;
         }
-    },true);
+    }, true);
 
-    var result = cls.method().decorate('push',['foo','bar']);
+    let result = cls.method().decorate('push', ['foo', 'bar']);
 
     console.log(result);
 

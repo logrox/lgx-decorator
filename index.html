@@ -29,16 +29,32 @@
             name: "addClass",
             fnDecor: function (className) {
                 let container = $('<div>');
-                let html = $(this + '');
+                let html = $(this.valueOf());
+                let $this = this;
 
 
                 html.addClass([...arguments].join(' '));
                 html.bind('click', function (e) {
-                    console.log('is Clicked', this, e);
+                    console.log({
+                        event: e,
+                        element: this,
+                        $this
+                    });
                 });
                 container.append(html);
 
                 return container;
+            }
+        });
+        stringDecorator.decoration({
+            decorMethod: 'small',
+            name: "setColor",
+            fnDecor: function (color) {
+                let container = $('<div>');
+                let html = $(this.valueOf());
+                html.css({color});
+                console.log(this, html);
+                return html;
             }
         });
 
@@ -46,7 +62,9 @@
             decorMethod: 'small',
             name: "p",
             fnDecor: function (arg) {
-                return `<p class="test">${this}</p>`;
+                let p = $('<p>');
+                p.append(this);
+                return p;
             }
         });
 
@@ -64,7 +82,7 @@
 </head>
 <body>
 
-<script>
+<script type="application/javascript">
     let test = 'test'.small()
         .decorate('addClass', [
             'text__small',
@@ -75,13 +93,15 @@
     $('body').append(test);
 
     let test2 = 'test2'.small().decorate({
-        "p": ["#F0FD0D"],
+        "setColor": ["#00FF00"],
         "addClass": ['text__small', 'text__small--hover-color-blue'],
+        "p": [],
     });
 
     $('body').append(test2);
+</script>
 
-
+<script type="application/javascript">
     function Cls() {
     }
 
@@ -104,7 +124,8 @@
     let result = cls.method().decorate('push', ['foo', 'bar']);
 
     console.log(result);
-
 </script>
+
 </body>
+
 </html>

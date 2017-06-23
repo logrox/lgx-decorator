@@ -1,6 +1,6 @@
-#Dekorator
+# Dekorator
 
-###Do czego
+### Do czego
 Jeśli posiadasz zewnętrzne biblioteki lub masz własne, ale nie chcesz zmieniać ich wewnętrznego kodu to w większości
 przypadków posiadają one możliwość rozszerzenia swojej funkcjonalności, jednak nie zawsze.
 
@@ -9,7 +9,7 @@ Prostym przykładam jest metoda `small()` Obiektu `String` która na wyjściu zw
 użycie dokoratora pozwoli na zmianę danych wyjściowych i np. pozwoli dodać atrybut `<small class="class-name">` zachowująć
 bazowe właściwości metody `small()`.
 
-##Sposób użycia
+## Sposób użycia
 
 Konstruktor klasy potrzebuje Obiektu, na którym będzie dokonywał zmian na przykład `String`.
 Dekorować będziemy metodę `small()`, tak by na danych wyjściowych uzyskać kolor tekstu `#FF0000`.
